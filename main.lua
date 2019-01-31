@@ -50,11 +50,24 @@ function love.draw()
   
     love.graphics.circle("fill",ListePoints[N].x,ListePoints[N].y,2)
     ListePoints[N].position = N
+    love.graphics.print("P"..tostring(ListePoints[N].position),(ListePoints[N].x)-7,(ListePoints[N].y)+5)
+
+    
   end
  
   
 love.graphics.setColor(255, 255, 255)
-love.graphics.print("Nombre de point : "..tostring(#ListePoints),(LARGEUR-(LARGEUR/4))+5,0)
+love.graphics.setColor(0.3, 1, 0) -- Vert Lime
+
+love.graphics.print("Nombre de point : "..tostring(#ListePoints),(LARGEUR-(LARGEUR/4))+5,2)
+love.graphics.setColor(0.5, 0.6, 0.8) -- Bleu gris
+
+love.graphics.rectangle("fill", (LARGEUR-(LARGEUR/4))+150,0,200,20) -- Bouton Effacer
+love.graphics.setColor(0.8, 0, 0) -- Rouge
+
+love.graphics.print("Effacer les points ",(LARGEUR-(LARGEUR/4))+200,2)
+love.graphics.setColor(255, 255, 255) -- Blanc
+
 love.graphics.line((LARGEUR-(LARGEUR/4)), 20, LARGEUR, 20)
 
   if #ListePoints ~= 0 then
@@ -62,8 +75,8 @@ love.graphics.line((LARGEUR-(LARGEUR/4)), 20, LARGEUR, 20)
     for N =1,#ListePoints do
       ListePointsGui[N] = ListePoints[N]
       love.graphics.print("P"..tostring(ListePointsGui[N].position),(LARGEUR-(LARGEUR/4))+10,yGui)
-      love.graphics.print("x:"..tostring(ListePointsGui[N].x),(LARGEUR-(LARGEUR/4))+60,yGui)
-      love.graphics.print("y:"..tostring(ListePointsGui[N].y),(LARGEUR-(LARGEUR/4))+110,yGui)
+      love.graphics.print("X: "..tostring(ListePointsGui[N].x),(LARGEUR-(LARGEUR/4))+60,yGui)
+      love.graphics.print("Y: "..tostring(ListePointsGui[N].y),(LARGEUR-(LARGEUR/4))+110,yGui)
       yGui = yGui + 15
     end
   end
@@ -71,21 +84,21 @@ love.graphics.line((LARGEUR-(LARGEUR/4)), 20, LARGEUR, 20)
 end
 
 function love.mousepressed(x, y, button, istouch)
-   if button == 1 then -- Versions prior to 0.10.0 use the MouseConstant 'l'
+   if (button == 1 and x < (LARGEUR-(LARGEUR/4))) then 
      
      local point = {}
-     
-     if x > (LARGEUR-(LARGEUR/4)) then
-       
-      point.x = (LARGEUR-(LARGEUR/4))-4
-      point.y = y
-      else
-    
       point.x = x
       point.y = y
-      end
       table.insert(ListePoints,point)
+      
    end
+   
+   if (button == 1 and x > (LARGEUR-(LARGEUR/4))+149  and y < 21) then
+     for k in pairs (ListePoints) do
+        ListePoints[k] = nil
+      end
+    end
+   
 end
 
 function love.keypressed(key)
