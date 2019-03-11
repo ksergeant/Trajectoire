@@ -10,23 +10,14 @@ if arg[#arg] == "-debug" then require("mobdebug").start() end
 
 local ListePoints = {}
 local ListePointsGui = {}
-local Point = {}
-Point.x = 0
-Point.y = 0
-Point.name = "P"
-Point.position = 0
 
 function DrawPoint()
   
  
-
 end
 
 function love.load()
 
-  mx = -1
-  my = -1
-  
   LARGEUR = love.graphics.getWidth()
   HAUTEUR = love.graphics.getHeight()
   
@@ -48,13 +39,21 @@ function love.draw()
  
   for N=1,#ListePoints do
   
-    love.graphics.circle("fill",ListePoints[N].x,ListePoints[N].y,2)
+    love.graphics.circle("fill", ListePoints[N].x, ListePoints[N].y, 2)
+    love.graphics.circle("line", ListePoints[N].x, ListePoints[N].y, ListePoints[N].rayon)
     ListePoints[N].position = N
     love.graphics.print("P"..tostring(ListePoints[N].position),(ListePoints[N].x)-7,(ListePoints[N].y)+5)
 
     
   end
  
+  if #ListePoints > 0 then
+    
+    love.graphics.line(ListePoints[#ListePoints].x,ListePoints[#ListePoints].y,
+    love.mouse.getX(), love.mouse.getY())
+    love.graphics.circle("line", love.mouse.getX(), love.mouse.getY(),40)
+    
+  end
   
 love.graphics.setColor(255, 255, 255)
 love.graphics.setColor(0.3, 1, 0) -- Vert Lime
@@ -89,6 +88,7 @@ function love.mousepressed(x, y, button, istouch)
      local point = {}
       point.x = x
       point.y = y
+      point.rayon = 40
       table.insert(ListePoints,point)
       
    end
